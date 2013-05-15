@@ -245,48 +245,55 @@ model.$save()
 This operation uses **model.$toObject()** to understand the changes and once everything is saved it will update your model so the new data will replace the original even in the model so commands like **model.$diff()** or **model.$isChanged()** will reply empty and/or false.
 
 ### model.$delete()
-
-    model.$delete() //delete also return a Promisse
+```javascript
+model.$delete() //delete also return a Promisse
+```
 
 Just like get you can add an id and also change onDemand the idField
 
-    model.$delete(1)
-    //of
-    model.$delete(1,'otherField');
+```javascript
+model.$delete(1)
+//of
+model.$delete(1,'otherField');
+```
     
 ### model.$fetch()
 > This is a important stuff because anytime you need to instance a object you need to $fetch() that.
 
 Example
 
-    model.$find().success(function() {
-    	var returnedObject;
-    	
-    	console.log(model.$toObject()); //empty data just a master handler
-    	
-    	while(returnedObject = model.$fetch()) {
-    		console.log(returnedObject.$toObject()); //this are the child object
-    		
-    		console.log(model.$toObject()); //this are the master model object with child data
-    	}
-    });
+```javascript
+model.$find().success(function() {
+	var returnedObject;
+	
+	console.log(model.$toObject()); //empty data just a master handler
+	
+	while(returnedObject = model.$fetch()) {
+		console.log(returnedObject.$toObject()); //this are the child object
+		
+		console.log(model.$toObject()); //this are the master model object with child data
+	}
+});
+```
 
 ### model.next()
 > This is the man how makes **model.$fetch()** works
 
 Example
 
-    model.$find().success(function() {
-    	var returnedObject;
-    	
-    	console.log(model.$toObject()); //empty data just a master handler
-    	
-    	while(returnedObject = model.$next()) {
-    		console.log(returnedObject.$toObject()); //this are the child object
-    		
-    		console.log(model.$toObject()); //this are the master model object with child data
-    	}
-    });
+```javascript
+model.$find().success(function() {
+	var returnedObject;
+	
+	console.log(model.$toObject()); //empty data just a master handler
+	
+	while(returnedObject = model.$next()) {
+		console.log(returnedObject.$toObject()); //this are the child object
+		
+		console.log(model.$toObject()); //this are the master model object with child data
+	}
+});
+```
 
 ### model.prev()
 > Same as **model.$next()** but to move the cursor back.
@@ -298,15 +305,21 @@ Example
 
 This is cool and can be combined to alert the user about unsaved changes.
 
-    model.$isChanged()
+```javascript
+model.$isChanged()
+```
     
 And also you can check for only one field
 
-    model.$isChanged('fname')
+```javascript
+model.$isChanged('fname')
+```
 
 Here is a pratical sample in the html using AngularJS
 
-    <input ng-class="{unsaved: item.$isChanged('fname')}" ng-model="item.fname" />
+```html
+<input ng-class="{unsaved: item.$isChanged('fname')}" ng-model="item.fname" />
+```
 
 That sample put in the input the class "unsaved" if the field "fname" is changed ( and will disappear once **model.$save()** is invoked and of course returns success )
 
@@ -314,28 +327,36 @@ That sample put in the input the class "unsaved" if the field "fname" is changed
 ### model.$diff()
 > Display the difference between the original data and the staged data and returns a Object with all ( and only ) changed fields
 
-    model.$diff(); //this will return something like { fname : "New data" }
+```javascript
+model.$diff(); //this will return something like { fname : "New data" }
+```
 
 
 ### model.$toObject()
 > Return a raw object with all **STAGED** ( not the original, not the saved, the STAGED/CURRENT ) data.
 
-    model.$toObject()
+```javascript
+model.$toObject()
+```
 
 Will return something like as a Javascript Object
 
-    {
-      idUser: "1",
-      fname: "New Name",
-      lname: "Admin",
-      uuid: "4f68f72080969"
-    }
+```json
+{
+  idUser: "1",
+  fname: "New Name",
+  lname: "Admin",
+  uuid: "4f68f72080969"
+}
+```
 
 
 ### model.$original()
 > Return a raw object with all **ORIGINAL** data of the model even if there are changes.
 
-    model.$original()
+```javascript
+model.$original()
+```
 
 Will return something like as a Javascript Object
 
@@ -349,9 +370,11 @@ Will return something like as a Javascript Object
 ### model.$url()
 > This return the url to a given method and parameters (optional)
 
-    console.log( model.$url('get') )
-    //or
-    console.log( model.$url('get',{ idUser : 1 }) )    
+```javascript
+console.log( model.$url('get') )
+//or
+console.log( model.$url('get',{ idUser : 1 }) )
+```
 
 
 ## Really Deep Stuff
