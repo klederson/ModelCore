@@ -9,7 +9,7 @@ ExampleApp.factory("Videos",function(ModelCore) {
         many : "items"
       },
       urls : { //
-        base : "https://www.googleapis.com/youtube/v3/search?part=snippet&key={{YOURGOOGLEAPIHERE}}"
+        base : "https://www.googleapis.com/youtube/v3/search?part=snippet&key={{YOURAPIKEY}}"
       }
     }
   });
@@ -18,7 +18,18 @@ ExampleApp.factory("Videos",function(ModelCore) {
 function MainCrtl($scope, Videos) {
   $scope.models = new Videos();
 
+  //Using regular find
   $scope.models.$find({q : "php", maxResults : 10 }).success(function() {
-    console.log($scope.models.$dataset)
-  })
+    console.log($scope.models.$dataset);
+
+    //Using $find with query, options and incremental == true
+    $scope.models.$find({q : "angularjs", maxResults : 10 },{},true).success(function() {
+      console.log($scope.models.$dataset);
+
+      //Using $find alias $incremental(query,options) that dont need to explicity the true
+      $scope.models.$incremental({q : "nodejs", maxResults : 10 }).success(function() {
+        console.log($scope.models.$dataset)
+      })
+    })
+  })    
 }
