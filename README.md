@@ -70,7 +70,7 @@ Now you have a Fully Functional model in your app… but HEY! Show me the magic!
 
 Ok, you can see the sample's [source code](https://github.com/klederson/ModelCore/tree/master/sample)
 
-### ModelCore.instance()
+### ModelCore.instance(options)
 
 This method help you to create a new instance… for now it's just used at angular factory but soon will be updated to work with pure javascript and than… we provide more info about that. For now… just trust me on this.
 
@@ -193,7 +193,7 @@ And is basicaly that.
 ### model.$pkField
 > Define witch will be the pkField to some automatic operations refer to
 
-### model.$find()
+### model.$find(query,options,incremental)
 > Perform a call to the server using "GET"
 
 ```javascript
@@ -213,9 +213,17 @@ model.$find({ filter : "John" });
 //of course your REST server should accept the query string ?filter=…
 //this will generate a requst like: http://myapi.com/users/?filter=John
 ```
+And of course you can increment your dataset by adding an optional parameter called incremental
 
+```javascript
+model.$find({ filter : "John" },{},true); 
+//this will increment your dataset instead of clean it and will join both previus and new data
+```
+> Note that i used a empty object as parameter this is the options parameter to be used as a future implementation
 
-### model.$get(id)
+### model.$incremental(query,options)
+
+### model.$get(id,field)
 > This will retreive a given id User. Of course your server must reply following some REST basic patterns such as:
 > 
 > GET /api/users/1 HTTP/1.1
@@ -244,7 +252,7 @@ model.$save()
 
 This operation uses **model.$toObject()** to understand the changes and once everything is saved it will update your model so the new data will replace the original even in the model so commands like **model.$diff()** or **model.$isChanged()** will reply empty and/or false.
 
-### model.$delete()
+### model.$delete(id,field)
 ```javascript
 model.$delete() //delete also return a Promisse
 ```
@@ -300,7 +308,7 @@ model.$find().success(function() {
 
 ## Auxiliar Methods
 
-### model.$isChanged()
+### model.$isChanged(field)
 > This returns a Boolean if is or not changed based on the original data ( the REQUEST momentum )
 
 This is cool and can be combined to alert the user about unsaved changes.
@@ -367,7 +375,7 @@ Will return something like as a Javascript Object
       uuid: "4f68f72080969"
     }
 
-### model.$url()
+### model.$url(method,parameters)
 > This return the url to a given method and parameters (optional)
 
 ```javascript
