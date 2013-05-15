@@ -274,7 +274,7 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
      */
      $parse : function(data) {
       var self = this;
-      return ModelCore.parse(data,self);
+      return self.$dataset = ModelCore.parse(data,self);
     },
 
     __cursor : 0,
@@ -418,7 +418,7 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
       return ModelCore.instance(modelData);
     };
 
-    model.$dataset = [];
+    var dataset = []; //model.$dataset = [];
     for(i in content) {
 
       //Magic Mapping
@@ -431,10 +431,10 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
 
       content[i].$parentModel = model;
 
-      model.$dataset.push ( new new base(content[i]) );
+      dataset.push ( new new base(content[i]) );
     }
 
-    return model.$dataset;
+    return dataset;
   }
 
   /**
