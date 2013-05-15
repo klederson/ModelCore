@@ -21,41 +21,47 @@ First of all ( and of course ) you need to include it's javascript in your html
 
 The samples here are for AngularJS please keep that in mind for more informations please check  [their site](http://www.angularjs.org/)
 
-    <script src="ModelCore.js"></script>
+```html
+<script src="ModelCore.js"></script>
+```
 
 Than you need to setup your app to receive ModelCore
 
-    var ExampleApp = angular.module('ExampleApp', ['ModelCore']); //injecting ModelCore
-    
-    ExampleApp.factory("Users",function(ModelCore) {
-      return ModelCore.instance({
-        $type : "Users", //Define the Object type
-        $pkField : "idUser", //Define the Object primary key
-        $settings : {
-          urls : {
-            base : "http://myapi.com/users/:idUser",
-          }
-        }
-      });
-    });
+```javascript
+var ExampleApp = angular.module('ExampleApp', ['ModelCore']); //injecting ModelCore
+
+ExampleApp.factory("Users",function(ModelCore) {
+  return ModelCore.instance({
+    $type : "Users", //Define the Object type
+    $pkField : "idUser", //Define the Object primary key
+    $settings : {
+      urls : {
+        base : "http://myapi.com/users/:idUser",
+      }
+    }
+  });
+});
+```
 
 And Then we setup our Controller to use our model ( in this case Users )
 
-    function MainCrtl($scope, Users) {
-      //Setup a model to example a $find() call
-      $scope.AllUsers = new Users();
-      
-      //Get All Users from the API
-      $scope.AllUsers.$find();
-    
-      //Setup a model to example a $get(id) call
-      $scope.OneUser = new Users();
-      
-      //Hey look there are promisses =)
-      //Get the user with idUser 1 - look at $pkField
-      $scope.OneUser.$get(1).success(function() {
-        console.log("Done!",$scope.OneUser.$fetch());
-    });
+```javascript
+function MainCrtl($scope, Users) {
+  //Setup a model to example a $find() call
+  $scope.AllUsers = new Users();
+  
+  //Get All Users from the API
+  $scope.AllUsers.$find();
+
+  //Setup a model to example a $get(id) call
+  $scope.OneUser = new Users();
+  
+  //Hey look there are promisses =)
+  //Get the user with idUser 1 - look at $pkField
+  $scope.OneUser.$get(1).success(function() {
+    console.log("Done!",$scope.OneUser.$fetch());
+});
+```
     
 
 And … that's all to be honest… =)
@@ -78,33 +84,37 @@ Urls define witch url should be used in each REST Method case, example, if you w
 
 > **urls.base** is a very important trick because if your REST server follows the correct specifications you only need one url to rule them all and base does that
 
-    ExampleApp.factory("Users",function(ModelCore) {
-      return ModelCore.instance({
-        $type : "Users",
-        $pkField : "idUser",
-        $settings : {
-          urls : {
-            base : "http://yourapi.com/users/:idUser",
-            post : "http://myOtherApi.com/users/:id",
-            get : "http://aThirdApi.com/users/get/"
-          }
-        }
-      });
-    });
+```javascript
+ExampleApp.factory("Users",function(ModelCore) {
+  return ModelCore.instance({
+    $type : "Users",
+    $pkField : "idUser",
+    $settings : {
+      urls : {
+        base : "http://yourapi.com/users/:idUser",
+        post : "http://myOtherApi.com/users/:id",
+        get : "http://aThirdApi.com/users/get/"
+      }
+    }
+  });
+});
+```
 
 #### headers
 
 This will setup your rest call headers
 
+```javascript
+…
+$settings : {
     …
-    $settings : {
-        …
-        headers : { 
-            'Content-Type' : 'application/json'
-        }
-        …
+    headers : { 
+        'Content-Type' : 'application/json'
     }
     …
+}
+…
+```
 
 #### dataField
 
@@ -115,56 +125,63 @@ I'll give you a example to better explain the idea.
 ##### JSON Response from SERVER
 
 **One**
-    GET /api/users/1 HTTP/1.1
-    Content-Type: application/json
-	
+
+```javascript
+//GET /api/users/1 HTTP/1.1
+//Content-Type: application/json
+
+{
+"status": "OK",
+"content": 
     {
-    "status": "OK",
-    "content": 
-        {
-            "idUser": "1",
-            "fname": "Nome",
-            "lname": "Admin",
-            "uuid": "4f68f72080969"
-        }
+        "idUser": "1",
+        "fname": "Nome",
+        "lname": "Admin",
+        "uuid": "4f68f72080969"
     }
+}
+```
 
 **Many**
 
-	GET /api/users/ HTTP/1.1
-	Content-Type: application/json
-	
+```javascript
+//GET /api/users/ HTTP/1.1
+//Content-Type: application/json
+
+{
+"status": "OK",
+"items": [
     {
-    "status": "OK",
-    "items": [
-        {
-            "idUser": "1",
-            "fname": "Nome",
-            "lname": "Admin",
-            "uuid": "4f68f72080969"
-        },
-        {
-            "idUser": "2",
-            "fname": "Klederson",
-            "lname": "Bueno",
-            "uuid": "5192a8dfe289f"
-        }]        
-    }
+        "idUser": "1",
+        "fname": "Nome",
+        "lname": "Admin",
+        "uuid": "4f68f72080969"
+    },
+    {
+        "idUser": "2",
+        "fname": "Klederson",
+        "lname": "Bueno",
+        "uuid": "5192a8dfe289f"
+    }]        
+}
+```
 
 ##### dataField configuration
 
 > by the way this example is the default settings so if is like this you dont need to setup anything
 
+```javascript
+…
+$settings : {
     …
-    $settings : {
-        …
-        dataField : { 
-            one : "content",
-            many : "items"
-        }
-        …
+    dataField : { 
+        one : "content",
+        many : "items"
     }
     …
+}
+…
+```
 
 And is basicaly that.
 
@@ -179,17 +196,23 @@ And is basicaly that.
 ### model.$find()
 > Perform a call to the server using "GET"
 
-    model.$find();
+```javascript
+model.$find();
+```
 
 This method return a Promisse so you can handle the calls:
 
-    model.$find().success(fn).error(fn).then(fn); 
+```javascript
+model.$find().success(fn).error(fn).then(fn); 
+```
 
 You can also setup a query to complete your request such as filters or anything.
 
-    model.$find({ filter : "John" }); 
-    //of course your REST server should accept the query string ?filter=…
-    //this will generate a requst like: http://myapi.com/users/?filter=John
+```javascript
+model.$find({ filter : "John" }); 
+//of course your REST server should accept the query string ?filter=…
+//this will generate a requst like: http://myapi.com/users/?filter=John
+```
 
 
 ### model.$get(id)
@@ -200,18 +223,24 @@ You can also setup a query to complete your request such as filters or anything.
 > Other important thing: this already performs **model.$fetch()** so is not needed to call twice
 
 
-    model.$get(1); //it also uses promisses just like $find()
+```javascript
+model.$get(1); //it also uses promisses just like $find()
+```
 
 And you can onDemand change the "get" field just providing a second parameter with the model field name to use:
 
-    model.$get(1,"otherId");
+```javascript
+model.$get(1,"otherId");
+```
     
 This case bellow your url MUST have the **:otherId** parameter otherwise will make no sense once it will not be applied anyway.
 
 ### model.$save()
 > This will perform a POST (yes, for now we'll not add PUT as default save once we need to save and update automaticaly just like any ORM but in the future this will be configurable )
 
-    model.$save()
+```javascript
+model.$save()
+```
 
 This operation uses **model.$toObject()** to understand the changes and once everything is saved it will update your model so the new data will replace the original even in the model so commands like **model.$diff()** or **model.$isChanged()** will reply empty and/or false.
 
