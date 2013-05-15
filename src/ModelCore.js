@@ -26,9 +26,9 @@
  * @see https://github.com/klederson/ModelCore
  * @licence MIT
  */
-'use strict';
+ 'use strict';
 
-angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $filter) {
+ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $filter) {
 
   // Enable Cross Domain
   // This does OPTIONS request first than it executes the real request
@@ -88,19 +88,26 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
       return this.next();
     },
 
+    $incremental : function(query,options) {
+      return this.$find(query,options,true);
+    },
+
     /**
      * Perform a "SELECT" operation into the RESTful service
      * 
      * @return Promisse
      */
-     $find : function(query) {
+     $find : function(query,options,incremental) {
       var self = this;
+      incremental = typeof incremental == "undefined" || incremental == false ? false : true;
 
       return self.$call({
         url : self.$url("get"),
         method: "GET"
       }, self, query).success(function(result) {
-        self.$dataset = []; //cleanup
+        if(incremental !== true)
+          self.$dataset = []; //cleanup
+
         return self.$parse(result);
       });
     },
@@ -129,9 +136,9 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
         //This is when your server reply a LOT of items (probably because it does not support the GET /data/id HTTP/1.1)
         //and then the ModelCore handles it for you anyway
         self.$dataset = self.$dataset.length == 1 ? self.$dataset : $filter('filter')(self.$dataset,function(item) {
-           if( item[field] == id )
-            return item;
-        });
+         if( item[field] == id )
+          return item;
+      });
 
         return self.$dataset;
       });;
@@ -274,7 +281,7 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
      */
      $parse : function(data) {
       var self = this;
-      return self.$dataset = ModelCore.parse(data,self);
+      return self.$dataset = self.$dataset.concat( ModelCore.parse(data,self) );
     },
 
     __cursor : 0,
@@ -418,7 +425,7 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
       return ModelCore.instance(modelData);
     };
 
-    var dataset = []; //model.$dataset = [];
+    var dataset = [];
     for(i in content) {
 
       //Magic Mapping
@@ -545,8 +552,8 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
       if (hasOwnProperty.call(obj, key)) 
         return false;
 
-      return true;
-    }
+    return true;
+  }
 
 
  /* randomUUID.js - Version 1.0
@@ -588,6 +595,3 @@ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $fi
   //Finaly returns the Service
   return ModelCore;
 });
-
-
-
