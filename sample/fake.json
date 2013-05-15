@@ -1,0 +1,64 @@
+{
+"items": [
+        {
+            "idUser": "1",
+            "fname": "Klederson",
+            "lname": "Bueno",
+            "uuid": "51350ff94ca68"
+        },
+        {
+            "idUser": "2",
+            "fname": "John",
+            "lname": "Maddog",
+            "uuid": "5136cd2b76d6e"
+        },
+        {
+            "idUser": "3",
+            "fname": "John",
+            "lname": "Doe",
+            "uuid": "5138b8492bdf3"
+        },
+        {
+            "idUser": "4",
+            "fname": "Peter",
+            "lname": "Pan",
+            "uuid": "5138edb9cb43e"
+        },
+        {
+            "idUser": "5",
+            "fname": "Jack",
+            "lname": "Stranger",
+            "uuid": "513a28c6a4dbc"
+        },
+        {
+            "idUser": "6",
+            "fname": "Gandalf",
+            "lname": "the Grey",
+            "uuid": "513a3a6d19bfb"
+        },
+        {
+            "idUser": "7",
+            "fname": "Bilbo",
+            "lname": "Baggins",
+            "uuid": "513a3d56e39f5"
+        },
+        {
+            "idUser": "8",
+            "fname": "Frodo",
+            "lname": "Baggins",
+            "uuid": "513a95c873e05"
+        },
+        {
+            "idUser": "9",
+            "fname": "Ada",
+            "lname": "Lovelace",
+            "uuid": "513b504465bc3"
+        },
+        {
+            "idUser": "10",
+            "fname": "Anderson",
+            "lname": "Spider",
+            "uuid": "513bf9e9605f2"
+        }
+    ]
+}

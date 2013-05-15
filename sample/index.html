@@ -1,0 +1,77 @@
+<!doctype html>
+<html ng-app="ExampleApp">
+  <head>
+    <style>
+      ul {
+        position: relative;
+        float: left;
+        width: 45%;
+        margin-right: 1em;
+        border: 2px dashed #999;
+      }
+      ul li {
+        margin-bottom: 1em;
+        padding-bottom: 1em;
+        border-bottom: 2px solid #eee;
+      }
+
+      input {
+        outline: none;
+        border: 2px solid #eee;
+        padding : .5em;
+      }
+
+      .changed {
+        color : red;
+      }
+
+      input.changed {
+        border-color: red;
+      }
+    </style>
+  </head>
+  <body ng-controller="MainCrtl">
+    <p>
+      Of course save and delete will not work using the fake.json sample but you can check your console network to see the magic happening.
+      <br/>
+      Try this at your own rest server and enjoy.
+    </p>
+    <ul>
+      <li><h1>$scope.AllUsers.$find()</h1></li>
+      <li ng-repeat="item in AllUsers.$dataset">
+        <input ng-class="{changed: item.$isChanged('fname')}" ng-model="item.fname" /> <input ng-class="{changed: item.$isChanged('lname')}" ng-model="item.lname" />
+        <br/>
+        <b>Original:</b> {{item.__proto__.fname}} {{item.__proto__.lname}}
+        <br/>
+        <b>New Data:</b> {{item.fname}} {{item.lname}}
+        <br/>
+        <b>isChanged:</b> (<b ng-class="{changed: item.$isChanged()}">{{item.$isChanged()}}</b>)
+        <br/>
+        <b>Diff:</b> {{item.$diff()}}
+        <button ng-click="item.$save()">Save</button>
+        <button ng-click="item.$delete(item.idUser)">Delete</button>
+      </li>
+    </ul>
+    
+    <ul>
+      <li><h1>$scope.OneUser.$get(1)</h1></li>
+      <li ng-repeat="item in OneUser.$dataset">
+        <input ng-class="{changed: item.$isChanged('fname')}" ng-model="item.fname" /> <input ng-class="{changed: item.$isChanged('lname')}" ng-model="item.lname" />
+        <br/>
+        <b>Original:</b> {{item.__proto__.fname}} {{item.__proto__.lname}}
+        <br/>
+        <b>New Data:</b> {{item.fname}} {{item.lname}}
+        <br/>
+        <b>isChanged:</b> (<b ng-class="{changed: item.$isChanged()}">{{item.$isChanged()}}</b>)
+        <br/>
+        <b>Diff:</b> {{item.$diff()}}
+        <button ng-click="item.$save()">Save</button>
+        <button ng-click="item.$delete()">Delete</button>
+      </li>
+    </ul>
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
+  <script src="./app.js"></script>
+  <script src="../src/ModelCore.js"></script>
+</html>
