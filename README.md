@@ -62,7 +62,7 @@ And … that's all to be honest… =)
 
 Now you have a Fully Functional model in your app… but HEY! Show me the magic!!!
 
-Ok, you can see the sample's [source code](http://tbaindansei)
+Ok, you can see the sample's [source code](https://github.com/klederson/ModelCore/tree/master/sample)
 
 ### ModelCore.instance()
 
