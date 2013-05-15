@@ -410,5 +410,6 @@ Checkout the project at [Github](https://github.com/bfanger/angular-activerecord
 * qUnit Tests =) (of course)
 * Offline data
 * Query like filters such as .where() .and() .or() ...
+* OAuth
 
 Of course i accept suggestions
