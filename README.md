@@ -95,6 +95,9 @@ ExampleApp.factory("Users",function(ModelCore) {
         post : "http://myOtherApi.com/users/:id",
         get : "http://aThirdApi.com/users/get/"
       }
+    },
+    $myCustomMethod : function(info) { //yes you can create and apply your own custom methods
+    	console.log(info);
     }
   });
 });
