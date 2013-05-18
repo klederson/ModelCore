@@ -349,7 +349,7 @@ model.$toObject()
 
 Will return something like as a Javascript Object
 
-```json
+```javascript
 {
   idUser: "1",
   fname: "New Name",
@@ -367,13 +367,14 @@ model.$original()
 ```
 
 Will return something like as a Javascript Object
-
-    {
-      idUser: "1",
-      fname: "Nome",
-      lname: "Admin",
-      uuid: "4f68f72080969"
-    }
+```javascript
+{
+  idUser: "1",
+  fname: "Nome",
+  lname: "Admin",
+  uuid: "4f68f72080969"
+}
+```
 
 ### model.$url(method,parameters)
 > This return the url to a given method and parameters (optional)
