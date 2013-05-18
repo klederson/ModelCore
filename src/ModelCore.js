@@ -419,10 +419,8 @@
     var self = this;
 
     var base = function(modelData) {
-      modelData.$type = model.$type;
-      modelData.$settings = model.$settings;
-      modelData.$pkField = model.$pkField;
-      return ModelCore.instance(modelData);
+      angular.extend(modelData,model)
+      return ModelCore.instance(modelData,model);
     };
 
     var dataset = [];
@@ -437,7 +435,7 @@
       }
 
       content[i].$parentModel = model;
-
+      
       dataset.push ( new new base(content[i]) );
     }
 
@@ -449,11 +447,9 @@
    * Thanks dude! =)
    * @see http://github.com/bfanger/angular-activerecord/
    */
-   ModelCore.instance = function(props,staticProps) {
-    var parent = this;
+   ModelCore.instance = function(props,original) {
     var self;
-
-    window._ModelCoreConstructor = parent;
+    var parent = window._ModelCoreConstructor = this;
 
     //building the constructor with the right type
     self = new Function(
@@ -467,6 +463,10 @@
     //Populate self prototype
     self.prototype = new TabulaRasa();
 
+    //Exend original methods and properties
+    if(original)
+      angular.extend(self.prototype, original.__proto__)
+
     //Apply custom methods and attributes
     if (props) {
       angular.extend(self.prototype, props);
@@ -474,7 +474,8 @@
 
     //console.log(props,staticProps)
 
-    angular.extend(self, parent, staticProps);
+    angular.extend(self, parent, original);
+
 
     //Define references to it's masters methods
     self.__super__ = parent.prototype;
