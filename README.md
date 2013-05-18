@@ -38,6 +38,9 @@ ExampleApp.factory("Users",function(ModelCore) {
       urls : {
         base : "http://myapi.com/users/:idUser",
       }
+    },
+    $myCustomMethod : function(info) { //yes you can create and apply your own custom methods
+    	console.log(info);
     }
   });
 });
@@ -95,6 +98,9 @@ ExampleApp.factory("Users",function(ModelCore) {
         post : "http://myOtherApi.com/users/:id",
         get : "http://aThirdApi.com/users/get/"
       }
+    },
+    $myCustomMethod : function(info) { //yes you can create and apply your own custom methods
+    	console.log(info);
     }
   });
 });
