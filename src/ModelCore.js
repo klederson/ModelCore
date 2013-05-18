@@ -435,7 +435,7 @@
       }
 
       content[i].$parentModel = model;
-      
+
       dataset.push ( new new base(content[i]) );
     }
 
@@ -450,10 +450,11 @@
    ModelCore.instance = function(props,original) {
     var self;
     var parent = window._ModelCoreConstructor = this;
+    var type = original ? original.$type : props.$type;
 
     //building the constructor with the right type
     self = new Function(
-     "return function " + props.$type + "(settings) { window._ModelCoreConstructor.apply(this,arguments) }"
+     "return function " + type + "(settings) { window._ModelCoreConstructor.apply(this,arguments) }"
      )();
 
     //Now let's retreive persistent and other stuff from the "base" model

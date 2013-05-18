@@ -11,7 +11,7 @@ ExampleApp.factory("Users",function(ModelCore) {
       }
     },
     $myCustomAction : function(aaa) {
-      console.log(aaa);
+      console.log(aaa,this);
     }
   });
 });
