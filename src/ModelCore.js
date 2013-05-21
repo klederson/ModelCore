@@ -331,6 +331,8 @@
 
       var field = null;
 
+      self.$mapping = self.$dataset[index].$mapping;
+
       for(field in self.$dataset[index].$toObject()) {
         self[field] = self.$dataset[index][field];
       }
@@ -370,19 +372,6 @@
   };
 
   /**** STATIC METHODS ****/
-  ModelCore.offlineCall = function(options,model,query,uuid) {
-    var deferred = $q.defer();
-
-    scope.$apply(function() {
-      if (SessionStorage.get(uuid)) {
-        deferred.resolve('Hello, ' + name + '!');
-      } else {
-        deferred.reject('Greeting ' + name + ' is not allowed.');
-      }
-    });
-
-    return deferred.promise;
-  }
 
   ModelCore.destroy = function(model) {
 
@@ -409,12 +398,42 @@
 
     options.headers = model.$settings.headers;
 
+    console.log(options,model.$uuid)
+
     return $http(options);
-  },
+  }
+
+  ModelCore.__call = function(options,model,query) {
+    var deferred = $q.defer();
+    var _key = "_ModelCoreOfflineData";
+
+    if(typeof Storage !== "undefined") {
+      var data = {};
+      var offline = sessionStorage.getItem(_key);
+      if(typeof offline == "undefined") {
+        sessionStorage.setItem(_key,"{}");
+        offline = sessionStorage.getItem(_key);
+      }
+
+      offline = JSON.parse(offline);
+
+      data.calls[options.method] = { options : options, uuid : model.$uuid }
+
+      angular.extend(offline, data);
+
+      sessionStorage.setItem(_key,JSON.stringify(data));
+
+      deferred.resolve(model);
+    } else {
+      deferred.reject('Error processing offline call: ' + data.toString() );
+    }
+
+    return deferred.promise;
+  }
 
   ModelCore.parse = function(data,model) {
     var content = data[model.$settings.dataField.one] ? [ data[model.$settings.dataField.one] ] : data[model.$settings.dataField.many]
-    
+
     var i;
     var self = this;
 
@@ -554,8 +573,8 @@
       if (hasOwnProperty.call(obj, key)) 
         return false;
 
-    return true;
-  }
+      return true;
+    }
 
 
  /* randomUUID.js - Version 1.0
