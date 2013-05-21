@@ -398,8 +398,6 @@
 
     options.headers = model.$settings.headers;
 
-    console.log(options,model.$uuid)
-
     return $http(options);
   }
 
