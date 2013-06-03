@@ -28,7 +28,7 @@
  */
  'use strict';
 
- angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $filter) {
+ angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $filter, $rootScope) {
 
   // Enable Cross Domain
   // This does OPTIONS request first than it executes the real request
@@ -80,7 +80,11 @@
 
     $offline : false, //@TODO future implementation
 
-
+    $new : function(data) {
+      var self = this;
+      data = typeof data == "undefined" ? {} : data;
+      return new new ModelCore.newInstance(data,self);
+    },
     /**
      * Just an alias to the iterator next();
      */
@@ -380,6 +384,10 @@
 
   }
 
+  ModelCore.OfflineSettings = {
+    key : "_ModelCoreOfflineData"
+  };
+
   ModelCore.call = function(options,model,query) {
     var self = this;
 
@@ -403,19 +411,25 @@
 
   ModelCore.__call = function(options,model,query) {
     var deferred = $q.defer();
-    var _key = "_ModelCoreOfflineData";
+    var _key = ModelCore.OfflineSettings.key;
 
     if(typeof Storage !== "undefined") {
-      var data = {};
+      var data = {
+        calls : [] //is this right?
+      };
       var offline = sessionStorage.getItem(_key);
-      if(typeof offline == "undefined") {
+      
+      if(typeof offline == "undefined" || offline == null) {
         sessionStorage.setItem(_key,"{}");
         offline = sessionStorage.getItem(_key);
       }
 
+      console.log(_key,offline)
+
       offline = JSON.parse(offline);
 
-      data.calls[options.method] = { options : options, uuid : model.$uuid }
+      //error
+      data.calls[options.method].push({ options : options, uuid : model.$uuid });
 
       angular.extend(offline, data);
 
@@ -426,7 +440,14 @@
       deferred.reject('Error processing offline call: ' + data.toString() );
     }
 
-    return deferred.promise;
+    console.log(deferred)
+
+    return deferred;
+  }
+
+  ModelCore.newInstance = function(data,model) {
+    angular.extend(data,model)
+    return ModelCore.instance(data,model);
   }
 
   ModelCore.parse = function(data,model) {
@@ -453,7 +474,7 @@
 
       content[i].$parentModel = model;
 
-      dataset.push ( new new base(content[i]) );
+      dataset.push ( new new ModelCore.newInstance(content[i],model) );
     }
 
     return dataset;

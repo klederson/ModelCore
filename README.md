@@ -54,7 +54,15 @@ function MainCrtl($scope, Users) {
   $scope.AllUsers = new Users();
   
   //Get All Users from the API
-  $scope.AllUsers.$find();
+  $scope.AllUsers.$find().success(function() {
+    var current;
+    while(current = $scope.AllUsers.$fetch()) { //fetching on masters object
+      console.log("Fetched Data into Master Object",$scope.AllUsers.$toObject()) //reading fetched from master
+      //or just get the fetched object itself
+      console.log("Real fetched Object",current.$toObject())
+    }
+  });
+
 
   //Setup a model to example a $get(id) call
   $scope.OneUser = new Users();
@@ -62,7 +70,7 @@ function MainCrtl($scope, Users) {
   //Hey look there are promisses =)
   //Get the user with idUser 1 - look at $pkField
   $scope.OneUser.$get(1).success(function() {
-    console.log("Done!",$scope.OneUser.$fetch());
+    console.log("Done! One User found!",$scope.OneUser.$fetch());
 });
 ```
     
@@ -391,6 +399,12 @@ console.log( model.$url('get') )
 console.log( model.$url('get',{ idUser : 1 }) )
 ```
 
+### model.$new(data)
+> This will return a new instance of that model type with optional built in data
+
+```javascript
+var newModel = model.$new({ name : "Default Name" });
+```
 
 ## Really Deep Stuff
 
