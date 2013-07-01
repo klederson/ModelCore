@@ -134,7 +134,7 @@
         self.$dataset = []; //cleanup
         self.$parse(result);
 
-
+        self.$fetch();
 
         //This can be improved
         //This is when your server reply a LOT of items (probably because it does not support the GET /data/id HTTP/1.1)
@@ -253,16 +253,17 @@
 
       for (var prop in now) {
         if (!prev || prev[prop] !== now[prop]) {
-          if (typeof now[prop] == "object") {
+          if (typeof now[prop] == "object" && now[prop] !== null && typeof prev[prop] !== "undefined") {
             var c = self.$diff(prev[prop], now[prop]);
-            if (! self.isEmpty(c) ) // underscore
+
+            if (! ModelCore.isEmpty(c) ) // underscore
               changes[prop] = c;
           } else {
             changes[prop] = now[prop];
           }
         }
       }
-
+      
       return changes;
     },
 
@@ -339,6 +340,7 @@
 
       for(field in self.$dataset[index].$toObject()) {
         self[field] = self.$dataset[index][field];
+        self.__proto__[field] = self.$dataset[index][field];
       }
 
       return self.$dataset[index];
@@ -405,6 +407,7 @@
       options.params = query;
 
     options.headers = model.$settings.headers;
+    options.withCredentials = true;
 
     return $http(options);
   }
@@ -424,8 +427,6 @@
         offline = sessionStorage.getItem(_key);
       }
 
-      console.log(_key,offline)
-
       offline = JSON.parse(offline);
 
       //error
@@ -439,8 +440,6 @@
     } else {
       deferred.reject('Error processing offline call: ' + data.toString() );
     }
-
-    console.log(deferred)
 
     return deferred;
   }
@@ -510,8 +509,6 @@
     if (props) {
       angular.extend(self.prototype, props);
     }
-
-    //console.log(props,staticProps)
 
     angular.extend(self, parent, original);
 
