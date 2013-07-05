@@ -466,6 +466,10 @@
       //Magic Mapping
       var field;
       content[i].$mapping = {};
+
+      if(typeof model.$mapping != "undefined")
+        angular.extend(content[i].$mapping,model.$mapping);
+
       for(field in content[i]) {
         if(field != "$mapping")
           content[i].$mapping[field] = true;
