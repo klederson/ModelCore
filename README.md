@@ -372,6 +372,31 @@ Will return something like as a Javascript Object
 }
 ```
 
+### model.$reset()
+> This cleanup the current model based on model.$mapping ( pre or post mapped )
+
+```javascript
+model.$reset()
+```
+
+or
+
+```javascript
+var myModel = model.$reset()
+```
+
+### model.$resetTo(data)
+> This cleanup the current model and populate with given new one based on model.$mapping ( pre or post mapped )
+
+```javascript
+model.$resetTo({idUser : 2, name : "Klederson"});
+```
+
+or
+
+```javascript
+var myModel = model.$resetTo({idUser : 2, name : "Klederson"});
+```
 
 ### model.$original()
 > Return a raw object with all **ORIGINAL** data of the model even if there are changes.

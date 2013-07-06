@@ -80,10 +80,28 @@
 
     $offline : false, //@TODO future implementation
 
+    $resetTo : function(data) {
+      var self = this;
+      data = !data || {};
+      for(i in self.$mapping) {
+        self.__proto__[i] = typeof data[i] !== "undefined" ? data[i] : null;
+      }
+
+      return self;
+    },
+
+    $reset : function() {
+      return this.$resetTo({});
+    },
+
     $new : function(data) {
       var self = this;
+
       data = typeof data == "undefined" ? {} : data;
-      return new new ModelCore.newInstance(data,self);
+
+      var o = new new ModelCore.newInstance({},self);
+
+      return self.$resetTo(data);
     },
     /**
      * Just an alias to the iterator next();
@@ -445,7 +463,6 @@
   }
 
   ModelCore.newInstance = function(data,model) {
-    angular.extend(data,model)
     return ModelCore.instance(data,model);
   }
 
@@ -507,7 +524,7 @@
 
     //Exend original methods and properties
     if(original)
-      angular.extend(self.prototype, original.__proto__)
+      angular.extend(self.prototype, original.__proto__);
 
     //Apply custom methods and attributes
     if (props) {
