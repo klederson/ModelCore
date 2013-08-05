@@ -47,6 +47,7 @@
     $settings : {},
     $mapping : {},
     $dataset : [],
+    $scope : null,
 
     /**
      * Constructor and Initalizator function
@@ -76,6 +77,7 @@
       }, self.$settings);
 
       self.$uuid = ModelCore.getUUID();
+      //self.$scope = $rootScope.$new(true); 
     },
 
     $offline : false, //@TODO future implementation
@@ -233,7 +235,10 @@
       var field;
       var obj = {};
       for(field in self.$mapping) {
-        obj[field] = self.__proto__[field];
+        if(typeof obj[field] !== "object")
+          obj[field] = self._cache[field];
+        else
+          obj[field] = angular.extend(obj[field],self._cache[field])
       }
 
       return obj;
@@ -356,6 +361,8 @@
 
       self.$mapping = self.$dataset[index].$mapping;
 
+      self._cache = self.$dataset[index]._cache;
+      
       for(field in self.$dataset[index].$toObject()) {
         self[field] = self.$dataset[index][field];
         self.__proto__[field] = self.$dataset[index][field];
@@ -399,8 +406,11 @@
 
   ModelCore.destroy = function(model) {
 
-    var index=model.$parentModel.$dataset.indexOf(model)
-    model.$parentModel.$dataset.splice(index,1);   
+    if(typeof model.$parentModel !== "undefined") {
+      var index=model.$parentModel.$dataset.indexOf(model)
+      model.$parentModel.$dataset.splice(index,1);
+    }
+
 
   }
 
@@ -479,7 +489,6 @@
 
     var dataset = [];
     for(i in content) {
-
       //Magic Mapping
       var field;
       content[i].$mapping = {};
@@ -487,9 +496,16 @@
       if(typeof model.$mapping != "undefined")
         angular.extend(content[i].$mapping,model.$mapping);
 
+      content[i]._cache = {};
       for(field in content[i]) {
-        if(field != "$mapping")
+        if(field != "$mapping" && field != "_cache") {
           content[i].$mapping[field] = true;
+          if(typeof content[i][field] === "object" ) {
+            content[i]._cache[field] = ModelCore.clone(content[i][field]);
+          } else {
+            content[i]._cache[field] = content[i][field];
+          }
+        }   
       }
 
       content[i].$parentModel = model;
@@ -498,6 +514,38 @@
     }
 
     return dataset;
+  }
+
+  ModelCore.clone = function(obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || "object" != typeof obj) return obj;
+
+    // Handle Date
+    if (obj instanceof Date) {
+      var copy = new Date();
+      copy.setTime(obj.getTime());
+      return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+      var copy = [];
+      for (var i = 0, len = obj.length; i < len; i++) {
+        copy[i] = ModelCore.clone(obj[i]);
+      }
+      return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+      var copy = {};
+      for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = ModelCore.clone(obj[attr]);
+      }
+      return copy;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
   }
 
   /**
@@ -522,6 +570,7 @@
     //Populate self prototype
     self.prototype = new TabulaRasa();
 
+
     //Exend original methods and properties
     if(original)
       angular.extend(self.prototype, original.__proto__);
@@ -531,8 +580,8 @@
       angular.extend(self.prototype, props);
     }
 
-    angular.extend(self, parent, original);
 
+    angular.extend(self, parent, original);
 
     //Define references to it's masters methods
     self.__super__ = parent.prototype;
