@@ -179,7 +179,11 @@
         var field;
         var data = self.$toObject();
         for(field in data) {
-          self.__proto__[field] = data[field];
+          if(typeof data[field] === "object") {
+            self._cache[field] = ModelCore.clone(data[field]);
+          } else {
+            self._cache[field] = data[field];
+          }
         }
       });
     },
@@ -516,10 +520,6 @@
     return dataset;
   }
 
-  /**
-   * Nice clone function adapted from http://stackoverflow.com/a/728694/1558820
-   * Tks
-   */
   ModelCore.clone = function(obj) {
     // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;
