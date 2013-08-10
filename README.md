@@ -4,7 +4,7 @@
 
 ModelCore is a very light and simple ActiveRecord and Data Mapper over REST ( with some nice features of course )
 
-The reason i built it was to easly handle lots of data and "Models" from REST api that i already work nowdays. The lack of good tools in this area made me do this in a 24h programming day.
+The reason i built it was to easily handle lots of data and "Models" from REST api that i already work nowadays. The lack of good tools in this area made me do this in a 24h programming day.
 
 ## Introduction
 
@@ -19,7 +19,7 @@ This is primary build to be used with AngularJS but will be soon ported to a fra
 
 First of all ( and of course ) you need to include it's javascript in your html
 
-The samples here are for AngularJS please keep that in mind for more informations please check  [their site](http://www.angularjs.org/)
+Please keep in mind the samples are for AngularJS.  For more information please check  [their site](http://www.angularjs.org/)
 
 ```html
 <script src="ModelCore.js"></script>
@@ -67,7 +67,7 @@ function MainCrtl($scope, Users) {
   //Setup a model to example a $get(id) call
   $scope.OneUser = new Users();
   
-  //Hey look there are promisses =)
+  //Hey look there are promises =)
   //Get the user with idUser 1 - look at $pkField
   $scope.OneUser.$get(1).success(function() {
     console.log("Done! One User found!",$scope.OneUser.$fetch());
@@ -91,7 +91,7 @@ When you create the model using ModelCore.instance() you need to provide some ba
 
 #### urls
 
-Urls define witch url should be used in each REST Method case, example, if you want POST to have one url and GET to have another you just do this:
+Urls define which url should be used in each REST Method case, example, if you want POST to have one url and GET to have another you just do this:
 
 > **urls.base** is a very important trick because if your REST server follows the correct specifications you only need one url to rule them all and base does that
 
@@ -182,7 +182,7 @@ I'll give you a example to better explain the idea.
 
 ##### dataField configuration
 
-> by the way this example is the default settings so if is like this you dont need to setup anything
+> by the way this example is the default setting, so if it is like this, you dont need to do any setup
 
 ```javascript
 …
@@ -197,15 +197,13 @@ $settings : {
 …
 ```
 
-And is basicaly that.
-
 ## Common Methods & Attributes
 
 ### model.$type
 > Define the type of the ModelCore.instance() object to return.
 
 ### model.$pkField
-> Define witch will be the pkField to some automatic operations refer to
+> Define the pkField that some automatic operations refer to
 
 ### model.$find(query,options,incremental)
 > Perform a call to the server using "GET"
@@ -214,7 +212,7 @@ And is basicaly that.
 model.$find();
 ```
 
-This method return a Promisse so you can handle the calls:
+This method return a Promise so you can handle the calls:
 
 ```javascript
 model.$find().success(fn).error(fn).then(fn); 
@@ -225,20 +223,20 @@ You can also setup a query to complete your request such as filters or anything.
 ```javascript
 model.$find({ filter : "John" }); 
 //of course your REST server should accept the query string ?filter=…
-//this will generate a requst like: http://myapi.com/users/?filter=John
+//this will generate a request like: http://myapi.com/users/?filter=John
 ```
 And of course you can increment your dataset by adding an optional parameter called incremental
 
 ```javascript
 model.$find({ filter : "John" },{},true); 
-//this will increment your dataset instead of clean it and will join both previus and new data
+//this will increment your dataset instead of clean it and will join both previous and new data
 ```
 > Note that i used a empty object as parameter this is the options parameter to be used as a future implementation
 
 ### model.$incremental(query,options)
 
 ### model.$get(id,field)
-> This will retreive a given id User. Of course your server must reply following some REST basic patterns such as:
+> This will retrieve a given id User. Of course your server must reply following some REST basic patterns such as:
 > 
 > GET /api/users/1 HTTP/1.1
 
@@ -246,7 +244,7 @@ model.$find({ filter : "John" },{},true);
 
 
 ```javascript
-model.$get(1); //it also uses promisses just like $find()
+model.$get(1); //it also uses promises just like $find()
 ```
 
 And you can onDemand change the "get" field just providing a second parameter with the model field name to use:
@@ -258,7 +256,7 @@ model.$get(1,"otherId");
 This case bellow your url MUST have the **:otherId** parameter otherwise will make no sense once it will not be applied anyway.
 
 ### model.$save()
-> This will perform a POST (yes, for now we'll not add PUT as default save once we need to save and update automaticaly just like any ORM but in the future this will be configurable )
+> This will perform a POST (yes, for now we'll not add PUT as default save once we need to save and update automatically just like any ORM but in the future this will be configurable )
 
 ```javascript
 model.$save()
@@ -268,7 +266,7 @@ This operation uses **model.$toObject()** to understand the changes and once eve
 
 ### model.$delete(id,field)
 ```javascript
-model.$delete() //delete also return a Promisse
+model.$delete() //delete also return a Promise
 ```
 
 Just like get you can add an id and also change onDemand the idField
@@ -337,7 +335,7 @@ And also you can check for only one field
 model.$isChanged('fname')
 ```
 
-Here is a pratical sample in the html using AngularJS
+Here is a practical sample in the html using AngularJS
 
 ```html
 <input ng-class="{unsaved: item.$isChanged('fname')}" ng-model="item.fname" />
@@ -444,7 +442,7 @@ var newModel = model.$new({ name : "Default Name" });
 Well, the first version (until the first version of this document) was written as i said in 24 hours and was only possible because some folks:
 
 #### BreezeJS
-Thankyou for be so awesome that made me really want to use your features but also be so complex/burocratic, heavy and so "microsoftized" that i give up before 4h trying to understand and customize a simple model.
+Thank you for be so awesome that made me really want to use your features but also be so complex/bureaucratic, heavy and so "microsoft-ized" that i give up before 4h trying to understand and customize a simple model.
 
 That make me realize that i needed to search more and more or even make my own solution
 
@@ -453,14 +451,14 @@ That make me realize that i needed to search more and more or even make my own s
 #### angular-activerecord (github project)
 This is a very nice project and very simple, works well but missed lots of stuff… at the beginning i wanted to do a fork of this and than just improve but ModelCore in my head would be so different that maybe would have dismissed the goal of this very nice project.
 
-Also this gave me the guidlines to start building and also to the **ModelCore.instance()** code.
+Also this gave me the guidelines to start building and also to the **ModelCore.instance()** code.
 
 Checkout the project at [Github](https://github.com/bfanger/angular-activerecord)
 
 ## Roadmap
 
 * Non-relational workflow ( it's almost but need more polish )
-* Pure Javascript (not dependend on AngularJS but fully compatible)
+* Pure Javascript (not dependent on AngularJS but fully compatible)
 * qUnit Tests =) (of course)
 * Offline data
 * Query like filters such as .where() .and() .or() ...
