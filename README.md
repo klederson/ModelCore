@@ -10,7 +10,7 @@ The reason i built it was to easily handle lots of data and "Models" from REST a
 
 This is primary build to be used with AngularJS but will be soon ported to a framework free solution.
 
-> This is the very first version of this and was coded (at least until the first version) in 24h ( between understand some ECMACScript stuff, research and angular learn curve + this documentation ).
+> This is the very first version of this and was coded (at least until the first version) in 24h ( between understand some ECMAScript stuff, research and angular learn curve + this documentation ).
 
 > So be brave and use at your own risk!!!!! =)
 
