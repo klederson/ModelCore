@@ -26,10 +26,10 @@
  * @see https://github.com/klederson/ModelCore
  * @licence MIT
  */
-(function(){
+ (function(){
   "use strict";
 
-   angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $filter, $rootScope) {
+  angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $filter, $rootScope) {
 
     // Enable Cross Domain
     // This does OPTIONS request first than it executes the real request
@@ -162,8 +162,8 @@
           //This can be improved
           //This is when your server reply a LOT of items (probably because it does not support the GET /data/id HTTP/1.1)
           //and then the ModelCore handles it for you anyway
-            self.$dataset = self.$dataset.length === 1 ? self.$dataset :
-              $filter('filter')(self.$dataset, function (item) {return item[field] == id ? item : false;});
+          self.$dataset = self.$dataset.length === 1 ? self.$dataset :
+          $filter('filter')(self.$dataset, function (item) {return item[field] == id ? item : false;});
 
           return self.$dataset;
         });
@@ -393,9 +393,9 @@
 
         self._cache = self.$dataset[index]._cache;
 
-        for(var field in self.$dataset[index].$toObject()) {
-          if(self.$dataset[index].hasOwnProperty(field)){self[field] = self.$dataset[index][field];}
-          if(self.__proto__.hasOwnProperty(field)){self.__proto__[field] = self.$dataset[index][field];}
+        for(field in self.$dataset[index].$toObject()) {
+          self[field] = self.$dataset[index][field];
+          self.__proto__[field] = self.$dataset[index][field];
         }
 
         return self.$dataset[index];
@@ -634,8 +634,8 @@
     /** THIRD PART SCRIPTS **/
 
       //FROM PHP.js
-    ModelCore.urlencode = function (str) {
-      str = (str + '').toString();
+      ModelCore.urlencode = function (str) {
+        str = (str + '').toString();
 
       // Tilde should be allowed unescaped in future versions of PHP (as reflected below), but if you want to reflect current
       // PHP behavior, you would need to add ".replace(/~/g, '%7E');" to the following.
@@ -734,10 +734,10 @@
       for (i = 0; i < 36; i++) {s[i] = itoh[s[i]];}
 
       // Insert '-'s
-      s[8] = s[13] = s[18] = s[23] = '-';
+    s[8] = s[13] = s[18] = s[23] = '-';
 
-      return s.join('');
-    };
+    return s.join('');
+  };
 
 
     //Finally returns the Service
