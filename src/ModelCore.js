@@ -179,6 +179,10 @@
         }, self).success(function() {
           var field;
           var data = self.$toObject();
+
+          if(typeof self._cache[field] === "undefined")
+            self._cache = {};
+
           for(field in data) {
             if(data.hasOwnProperty(field)){
               if(typeof data[field] === "object") {
@@ -241,6 +245,10 @@
 
         var field;
         var obj = {};
+
+        if(typeof self._cache === "undefined")
+          return false;
+
         for(field in self.$mapping) {
           if(self.$mapping.hasOwnProperty(field)){
             if(typeof obj[field] !== "object"){
@@ -288,6 +296,9 @@
 
         prev = typeof prev === "undefined" ? self.$original() : prev;
         now = typeof now === "undefined" ? self.$toObject() : now;
+
+        if(prev === false)
+          return false;
 
         for (var prop in now) {
           if(now.hasOwnProperty(prop)){
@@ -376,6 +387,9 @@
         }
 
         self.$mapping = self.$dataset[index].$mapping;
+
+        if(typeof self._cache === "undefined")
+          self._cache = {};
 
         self._cache = self.$dataset[index]._cache;
 
