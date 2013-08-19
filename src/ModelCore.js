@@ -177,22 +177,28 @@
           method : "POST",
           data : self.$toObject()
         }, self).success(function() {
-          var field;
-          var data = self.$toObject();
+          self.$cleanDiff();
+        });
+      },
 
-          if(typeof self._cache[field] === "undefined")
-            self._cache = {};
+      $cleanDiff : function() {
+        var self = this;
+        
+        if(typeof self._cache === "undefined") {
+          self._cache = {};
+        }
 
-          for(field in data) {
-            if(data.hasOwnProperty(field)){
-              if(typeof data[field] === "object") {
-                self._cache[field] = ModelCore.clone(data[field]);
-              } else {
-                self._cache[field] = data[field];
-              }
+        var data = self.$toObject();
+
+        for(var field in data) {
+          if(data.hasOwnProperty(field)){
+            if(typeof data[field] === "object") {
+              self._cache[field] = ModelCore.clone(data[field]);
+            } else {
+              self._cache[field] = data[field];
             }
           }
-        });
+        }
       },
 
       $delete : function(id, field) {
@@ -393,7 +399,7 @@
 
         self._cache = self.$dataset[index]._cache;
 
-        for(field in self.$dataset[index].$toObject()) {
+        for(var field in self.$dataset[index].$toObject()) {
           self[field] = self.$dataset[index][field];
           self.__proto__[field] = self.$dataset[index][field];
         }
