@@ -102,11 +102,16 @@
       $new : function(data) {
         var self = this;
 
-        data = typeof data === "undefined" ? {} : data;
+        data = typeof data === "undefined" ? self.$mapping : data;
 
         var o = new new ModelCore.newInstance({},self);
+        o._cache = {};
+        for(i in self.$mapping) {
+          o._cache[i] = ModelCore.clone(self.$mapping[i]);
+          o[i] = ModelCore.clone(self.$mapping[i]);
+        }
 
-        return self.$resetTo(data);
+        return o;
       },
       /**
        * Just an alias to the iterator next();
@@ -252,8 +257,11 @@
         var field;
         var obj = {};
 
-        if(typeof self._cache === "undefined")
+
+        if(typeof self._cache === "undefined") {
+          self._cache = {};
           return false;
+        }
 
         for(field in self.$mapping) {
           if(self.$mapping.hasOwnProperty(field)){
@@ -279,13 +287,11 @@
         var self = this;
         var diff = self.$diff();
 
-        if(typeof field === "undefined"){
+        if(typeof field === "undefined" && diff !== false){
           return Object.keys(diff).length > 0;
-        }
-        else if(diff[field]){
+        } else if(diff[field]){
           return !!diff[field];
-        }
-        else {
+        } else {
           return false;
         }
       },
