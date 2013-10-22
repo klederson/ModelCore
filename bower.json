@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "main": "./src/ModelCore.js",
   "dependencies": {
-    "AngularJS": "1.0.8"
+    "angular": "1.0.8"
   }
 }
