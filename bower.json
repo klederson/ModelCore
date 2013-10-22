@@ -1,7 +1,7 @@
 {
   "name": "ModelCore",
   "version": "1.0.0",
-  "main": "src/ModelCore.js",
+  "main": "./src/ModelCore.js",
   "dependencies": {
     "AngularJS": "1.0.8"
   }
