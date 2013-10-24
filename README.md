@@ -429,6 +429,98 @@ console.log( model.$url('get',{ idUser : 1 }) )
 var newModel = model.$new({ name : "Default Name" });
 ```
 
+### model.$getRelationship(name, query, options)
+> This is a nice and exciting feature that allows ModelCore works like a real javascript ORM.
+> By mapping a field as a relationship with another ModelCore model you can simply call $getRelationship('name'); and have all the power of ModelCore inside the relationship
+
+```javascript
+App.factory("Pictures",function(ModelCore) {
+  return ModelCore.instance({
+    $type : "Pictures", //Define the Object type
+    $pkField : "id", //Define the Object primary key
+    $mapping : {
+        id : null,
+        userId : null
+    },
+    $settings : {
+      urls : {
+        base : "/api/pictures/:id"
+      }
+    }
+});
+});
+
+App.factory("Address",function(ModelCore) {
+  return ModelCore.instance({
+    $type : "Address", //Define the Object type
+    $pkField : "id", //Define the Object primary key
+    $mapping : {
+        id : null,
+        userId : null
+    },
+    $settings : {
+      urls : {
+        base : "/api/address/:id"
+      }
+    }
+});
+});
+
+App.factory("Users",function(ModelCore, Address, Pictures) {
+  return ModelCore.instance({
+    $type : "Users", //Define the Object type
+    $pkField : "idUser", //Define the Object primary key
+    $mapping : {
+        idUser : null,
+        Address : Address,
+        Posts : Posts
+    },
+    $settings : {
+      urls : {
+        base : "/api/users/:idUser"
+      }
+    },
+    $hasMany : {
+        Posts : {
+            userId : "idUser" //just like query but here you put what field will relate with Posts.userId in this case User.idUser
+        }
+    },
+
+    $hasOne : {
+        Address : {
+            id : "id",
+            field : "userId" //field to be searched on Address model ( Address.userId ) its like do a Address.$get("1","userId") but inside the relationship
+        }
+    }
+});
+});
+```
+
+And than you can do whatever you want with the relationships
+
+```javascript
+function MainCrtl($scope, Users) { //note that we only need to inject Users model because the others are injected into the Model itself
+    $scope.user = new Users();
+    $scope.user.$get(1);
+
+    //One to Many relationship
+    $scope.user.$getRelationship("Pictures").success(function() {
+        for(i in $scope.user.Pictures.$dataset) {
+            console.log( $scope.user.Pictures.$dataset[i])
+        }
+    }).error(function(r) {
+        console.log(r);
+    });
+
+    //One to One relationship
+    $scope.user.$getRelationship("Address").success(function() {
+        console.log( $scope.user.Address)
+    }).error(function(r) {
+        console.log(r);
+    });
+}
+```
+
 ## Really Deep Stuff
 
 ### model.$dataset
