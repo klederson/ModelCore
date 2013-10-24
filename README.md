@@ -473,7 +473,7 @@ App.factory("Users",function(ModelCore, Address, Pictures) {
     $mapping : {
         idUser : null,
         Address : Address,
-        Posts : Posts
+        Pictures : Pictures
     },
     $settings : {
       urls : {
