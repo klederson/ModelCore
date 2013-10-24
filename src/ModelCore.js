@@ -47,6 +47,8 @@
       $pkField : null,
       $settings : {},
       $mapping : {},
+      $hasMany : {},
+      $hasOne : {},
       $dataset : [],
       $scope : null,
 
@@ -78,7 +80,6 @@
         }, self.$settings);
 
         self.$uuid = ModelCore.getUUID();
-        //self.$scope = $rootScope.$new(true);
       },
 
       $offline : false, //@TODO future implementation
@@ -142,6 +143,37 @@
           }
           return self.$parse(result);
         });
+      },
+
+      $getRelationship : function(name, query, options) {
+        var self = this;
+
+        //search for many to many or one to many
+        for(var rel in self.$hasMany) {
+            if(rel === name) {
+                console.log(self.$mapping[rel])
+                self[rel] = new self.$mapping[rel]();
+                query = query || {};
+                
+                for(var i in self.$hasMany[rel]) {
+                    query[i] = self[self.$hasMany[rel][i]]; //set query based on $mapping fields
+                }
+
+                return self[rel].$find(query,options);
+            }
+        }
+
+        //search for one to one
+        for(var rel in self.$hasOne) {
+            if(rel === name) {
+                self[rel] = self.$mapping[rel]();
+
+                var id = self[self.$hasMany[rel].id]; //mandatory
+                var field = self.$hasMany[rel].field || null;
+
+                return self[rel].$get(id,field);
+            }
+        }
       },
 
       $get : function(id,field) {
