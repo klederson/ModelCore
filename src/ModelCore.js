@@ -31,11 +31,6 @@
 
   angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $filter, $rootScope) {
 
-    // Enable Cross Domain
-    // This does OPTIONS request first than it executes the real request
-    // your server MUST respond this: Access-Control-Allow-Origin: *
-    $http.defaults.useXDomain = true;
-
     //Making possible to instance the typeof ModelCore
     var ModelCore = function ModelCore(settings) {
       this.$init.apply(this, arguments);
@@ -151,7 +146,6 @@
         //search for many to many or one to many
         for(var rel in self.$hasMany) {
             if(rel === name) {
-                console.log(self.$mapping[rel])
                 self[rel] = new self.$mapping[rel]();
                 query = query || {};
                 
@@ -514,7 +508,6 @@
       }
 
       options.headers = model.$settings.headers;
-      // options.withCredentials = true;
 
       return $http(options);
     };
