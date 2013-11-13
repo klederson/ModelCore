@@ -94,6 +94,10 @@
       $reset : function() {
         return this.$resetTo({});
       },
+      
+      $add : function(o) {
+        this.$dataset.push(o);
+      },
 
       $new : function(data) {
         var self = this;
