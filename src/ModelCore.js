@@ -133,9 +133,17 @@
         var self = this;
         incremental = !(typeof incremental === "undefined" || incremental == false);
 
-        return self.$call({
-          url : self.$url("get"),
+        var defaultOptions = {
+          urlCustom: "get",
+          urlParams: null,
           method: "GET"
+        };
+
+        options = angular.extend(defaultOptions, options ? options : {});
+
+        return self.$call({
+          url : self.$url(options.urlCustom, options.urlParams),
+          method: options.method
         }, self, query).success(function(result) {
           if(incremental !== true){
             self.$dataset = []; //cleanup
