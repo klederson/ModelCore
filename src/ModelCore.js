@@ -106,9 +106,9 @@
 
         var o = new new ModelCore.newInstance({},self);
         o._cache = {};
-        for(i in self.$mapping) {
-          o._cache[i] = ModelCore.clone(self.$mapping[i]);
-          o[i] = ModelCore.clone(self.$mapping[i]);
+        for(var i in self.$mapping) {
+          o._cache[i] = ModelCore.clone(data[i]);
+          o[i] = ModelCore.clone(data[i]);
         }
 
         return o;
