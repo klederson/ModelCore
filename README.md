@@ -25,7 +25,7 @@ Please keep in mind the samples are for AngularJS.  For more information please 
 <script src="ModelCore.js"></script>
 ```
 
-Than you need to setup your app to receive ModelCore
+Then you need to setup your app to receive ModelCore
 
 ```javascript
 var ExampleApp = angular.module('ExampleApp', ['ModelCore']); //injecting ModelCore
