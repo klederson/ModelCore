@@ -133,10 +133,17 @@
         var self = this;
         incremental = !(typeof incremental === "undefined" || incremental == false);
 
-        return self.$call({
+        //@ssjunior idea to easly manipulate method and url
+        options = angular.extend({
           url : self.$url("get"),
-          method: "GET"
-        }, self, query).success(function(result) {
+          method : "GET",
+          query : query
+        }, options ? options : {});
+
+        return self.$call({
+          url : options.url,
+          method: options.method
+        }, self, options.query).success(function(result) {
           if(incremental !== true){
             self.$dataset = []; //cleanup
           }
@@ -174,7 +181,7 @@
         }
       },
 
-      $get : function(id,field) {
+      $get : function(id,field, options) {
         var self = this;
 
         if(self.$pkField == null && typeof field === "undefined"){
@@ -185,10 +192,17 @@
         var parms = {};
         parms[field] = id;
 
+        //@ssjunior idea to easly manipulate method and url
+        options = angular.extend({
+          url : self.$url("get"),
+          method : "GET",
+          query : {}
+        }, options ? options : {});
+
         return self.$call({
-          url : self.$url("get",parms),
-          method : "GET"
-        }, self).success(function(result) {
+          url : options.url,
+          method : options.method
+        }, self, options.query).success(function(result) {
           self.$dataset = []; //cleanup
           self.$parse(result);
 
@@ -204,14 +218,24 @@
         });
       },
 
-      $save : function() {
+      $save : function(options) {
         var self = this;
 
+        var isNew = self[self.$pkField] === '' || self[self.$pkField] === undefined ? true : false ;
+        var method = isNew ? "PUT" : "POST";
+
+        //@ssjunior idea to easly manipulate method and url
+        options = angular.extend({
+          url : self.$url(method.toLowerCase()),
+          method : method,
+          query : {}
+        }, options ? options : {});
+
         return self.$call({
-          url : self.$url("post"),
-          method : "POST",
+          url : options.url,
+          method : options.method,
           data : self.$toObject()
-        }, self).success(function() {
+        }, self, options.query).success(function() {
           self.$cleanDiff();
         });
       },
@@ -236,7 +260,7 @@
         }
       },
 
-      $delete : function(id, field) {
+      $delete : function(id, field, options) {
         var self = this;
 
         if(self.$pkField == null && typeof field === "undefined"){
@@ -249,11 +273,18 @@
         var parms = {};
         parms[field] = id;
 
-        return self.$call({
-          url : self.$url("delete",parms),
+        //@ssjunior idea to easly manipulate method and url
+        options = angular.extend({
+          url : self.$url("delete",params),
           method : "DELETE",
+          query : {}
+        }, options ? options : {});
+
+        return self.$call({
+          url : options.url,
+          method : options.method,
           data : self.$toObject()
-        }, self).success(function() {
+        }, self, options.query).success(function() {
           ModelCore.destroy(self);
         });
       },
