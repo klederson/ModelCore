@@ -9,7 +9,7 @@ ExampleApp.factory("Videos",function(ModelCore) {
         many : "items"
       },
       urls : { //
-        base : "https://www.googleapis.com/youtube/v3/search?part=snippet&key={{YOURAPIKEY}}"
+        base : "https://www.googleapis.com/youtube/v3/search?part=snippet&key=AIzaSyBgu9gTtZQBVovfWnhw58Om5unY0YeRvak"
       }
     }
   });
@@ -31,5 +31,7 @@ function MainCrtl($scope, Videos) {
         console.log($scope.models.$dataset)
       })
     })
-  })    
+  }).error(function(response, code) {
+    console.log(code,response);
+  });
 }

@@ -37,13 +37,13 @@
     <ul>
       <li><h1>$scope.models.$find()</h1></li>
       <li ng-repeat="item in models.$dataset">
-        <span ng-bind="item.snippet.title" /> 
+        <input type="text" ng-model="item.snippet.title" /> <br/> {{item.snippet.title}}
       </li>
     </ul>
   </body>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
-  <script src="./app.js"></script>
-  <script src="../../src/ModelCore.js"></script>
+  <script src="/sample/youtube-search/app.js"></script>
+  <script src="/src/ModelCore.js"></script>
 </html>

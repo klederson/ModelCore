@@ -7,7 +7,7 @@ ExampleApp.factory("Users",function(ModelCore) {
     $pkField : "idUser",
     $settings : {
       urls : {
-        base : "./fake.json"
+        base : "/sample/jsonDocument/fake.json"
       }
     },
     $myCustomAction : function(aaa) {
