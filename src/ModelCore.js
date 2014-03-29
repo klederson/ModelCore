@@ -275,7 +275,7 @@
 
         //@ssjunior idea to easly manipulate method and url
         options = angular.extend({
-          url : self.$url("delete",params),
+          url : self.$url("delete",parms),
           method : "DELETE",
           query : {}
         }, options ? options : {});
