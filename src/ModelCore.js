@@ -194,7 +194,7 @@
 
         //@ssjunior idea to easly manipulate method and url
         options = angular.extend({
-          url : self.$url("get"),
+          url : self.$url("get",parms),
           method : "GET",
           query : {}
         }, options ? options : {});
