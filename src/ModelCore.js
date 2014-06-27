@@ -71,6 +71,13 @@
             // post : null,
             // remove : null,
             // update : null //...
+          },
+
+          httpMethods: {
+            create:  "PUT",
+            read:    "GET",
+            update:  "POST",
+            destroy: "DELETE"
           }
         }, self.$settings);
 
@@ -136,7 +143,7 @@
         //@ssjunior idea to easly manipulate method and url
         options = angular.extend({
           url : self.$url("get"),
-          method : "GET",
+          method : self.$settings.httpMethods.read,
           query : query
         }, options ? options : {});
 
@@ -195,7 +202,7 @@
         //@ssjunior idea to easly manipulate method and url
         options = angular.extend({
           url : self.$url("get",parms),
-          method : "GET",
+          method : self.$settings.httpMethods.read,
           query : {}
         }, options ? options : {});
 
@@ -222,11 +229,17 @@
         var self = this;
 
         var isNew = self[self.$pkField] === '' || self[self.$pkField] === undefined ? true : false ;
-        var method = isNew ? "PUT" : "POST";
+        var method = isNew ? self.$settings.httpMethods.create : self.$settings.httpMethods.update;
+
+        var parms = {}
+        if (!isNew) {
+          var field = self.$pkField;
+          parms[field] = self[field];
+        }
 
         //@ssjunior idea to easly manipulate method and url
         options = angular.extend({
-          url : self.$url(method.toLowerCase()),
+          url : self.$url(method.toLowerCase(), parms),
           method : method,
           query : {}
         }, options ? options : {});
@@ -276,7 +289,7 @@
         //@ssjunior idea to easly manipulate method and url
         options = angular.extend({
           url : self.$url("delete",parms),
-          method : "DELETE",
+          method : self.$settings.httpMethods.destroy,
           query : {}
         }, options ? options : {});
 
@@ -501,6 +514,11 @@
             }
           }
         }
+
+        // In cases where the URL has an extension, we can end up with
+        // URLs like .../resources/.json.
+        // This reduces it properly to .../resources.json
+        url = url.replace("/.", ".");
 
         return url;
       }
