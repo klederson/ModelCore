@@ -4,5 +4,6 @@
   "main": "./src/ModelCore.js",
   "dependencies": {
     "angular": "1.0.8"
-  }
+  },
+  "ignore": ["./sample/"]
 }
