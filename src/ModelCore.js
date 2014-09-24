@@ -29,7 +29,7 @@
  (function(){
   "use strict";
 
-  angular.module('ModelCore', ['ng']).factory('ModelCore', function($http, $q, $filter, $rootScope) {
+  angular.module('ModelCore', ['ng']).factory('ModelCore', ['$http', '$q', '$filter', '$rootScope', function($http, $q, $filter, $rootScope) {
 
     //Making possible to instance the typeof ModelCore
     var ModelCore = function ModelCore(settings) {
@@ -853,5 +853,5 @@
 
     //Finally returns the Service
     return ModelCore;
-  });
+  }]);
 })();
