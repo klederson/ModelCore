@@ -561,6 +561,7 @@
       }
 
       options.headers = model.$settings.headers;
+      options.withCredentials = model.$settings.withCredentials;
 
       return $http(options);
     };
