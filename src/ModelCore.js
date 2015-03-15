@@ -228,7 +228,7 @@
       $save : function(options) {
         var self = this;
 
-        var isNew = self[self.$pkField] === '' || self[self.$pkField] === undefined ? true : false ;
+        var isNew = self[self.$pkField] === '' || self[self.$pkField] === undefined || self[self.$pkField] == null  ? true : false ;
         var method = isNew ? self.$settings.httpMethods.create : self.$settings.httpMethods.update;
 
         var parms = {}
