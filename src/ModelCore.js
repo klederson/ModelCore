@@ -686,13 +686,13 @@
      */
      ModelCore.instance = function(props,original) {
       var self;
-      var parent = window._ModelCoreConstructor = this;
+      var parent = this;
       var type = original ? original.$type : props.$type;
 
-      //building the constructor with the right type
-      self = new Function(
-       "return function " + type + "(settings) { window._ModelCoreConstructor.apply(this,arguments) }"
-       )();
+      // building the constructor with the right type
+						 var argsFn = 'parent';
+						 var bodyFn = "return function " + type + "(settings) { parent.apply(this,arguments) }";
+						 self = new Function(argsFn, bodyFn)(parent);
 
       //Now let's retrieve persistent and other stuff from the "base" model
       var TabulaRasa = function () { this.$__construct = self; };
