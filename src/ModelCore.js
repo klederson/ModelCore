@@ -88,10 +88,10 @@
 
       $resetTo : function(data) {
         var self = this;
-        data = !data || {};
+          
         for(var i in self.$mapping) {
           if(self.$mapping.hasOwnProperty(i)){
-            self.__proto__[i] = typeof data[i] !== "undefined" ? data[i] : null;
+              self.__proto__[i] = typeof data[i] !== "undefined" ? data[i] : null;
           }
         }
 
