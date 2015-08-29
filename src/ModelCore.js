@@ -33,7 +33,7 @@
 
     //Making possible to instance the typeof ModelCore
     var ModelCore = function ModelCore(settings) {
-      this.$init.apply(this, arguments);
+      ModelCore.prototype.$init.apply(this, arguments);
     };
 
     //Making the magic happens
@@ -164,7 +164,7 @@
         //search for many to many or one to many
         for(var rel in self.$hasMany) {
             if(rel === name) {
-                self[rel] = new self.$mapping[rel]();
+                self[rel] = new self.$mapping[rel];
                 query = query || {};
                 
                 for(var i in self.$hasMany[rel]) {
@@ -178,10 +178,10 @@
         //search for one to one
         for(var rel in self.$hasOne) {
             if(rel === name) {
-                self[rel] = self.$mapping[rel]();
+                self[rel] = new self.$mapping[rel];
 
-                var id = self[self.$hasMany[rel].id]; //mandatory
-                var field = self.$hasMany[rel].field || null;
+                var id = self[self.$hasOne[rel].id]; //mandatory
+                var field = self.$hasOne[rel].field || null;
 
                 return self[rel].$get(id,field);
             }
