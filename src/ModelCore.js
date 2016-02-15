@@ -107,8 +107,28 @@
                 return this.$resetTo({});
             },
 
+            /**
+             * Author: Douglas Lira - douglas.lira.web@gmail.com
+             * add a new object type ModelCore
+             * @param data
+             */
             $add : function(o) {
-                this.$dataset.push(o);
+                this.$dataset.push(this.$new(o));
+            },
+
+            /**
+             * Author: Douglas Lira - douglas.lira.web@gmail.com
+             * Update local object without running the $find() to get the updated object
+             * @param data
+             */
+            $update : function(data) {
+                var self = this;
+                data = typeof data === "undefined" ? self.$mapping : data;
+                for(var i in self.$mapping) {
+                    self._cache[i] = data[i];
+                    self[i] = data[i];
+                }
+                return self;
             },
 
             $new : function(data) {
